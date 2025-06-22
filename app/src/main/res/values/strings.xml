@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Post Feed</string>
+    <string name="network_error">No internet connection</string>
+
+</resources>
