@@ -36,9 +36,6 @@ class PostViewModel(private val apiRepository: PostRepository) : ViewModel() {
     private val _allPostData = MutableLiveData<PostResponseModel>()
     val allPostData: LiveData<PostResponseModel> = _allPostData
 
-    private val _likeUpdate = MutableLiveData<Int>()
-    val likeUpdate: LiveData<Int> = _likeUpdate
-
     private val allPosts = mutableListOf<PostListData>()
 
     fun callgetPostApi(context: Context, reset: Boolean = false) {
@@ -92,10 +89,5 @@ class PostViewModel(private val apiRepository: PostRepository) : ViewModel() {
             }
         }
     }
-
-    fun toggleLike(position: Int) {
-        _likeUpdate.value = position
-    }
-
 
 }

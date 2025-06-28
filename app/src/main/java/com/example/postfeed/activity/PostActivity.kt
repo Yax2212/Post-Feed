@@ -67,15 +67,6 @@ class PostActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.likeUpdate.observe(this) { position ->
-            val post = adapter.postList[position].post
-            post?.let {
-                it.selfLike = !it.selfLike
-                it.TotalLike = if (it.selfLike) it.TotalLike + 1 else it.TotalLike - 1
-                adapter.notifyItemChanged(position)
-            }
-        }
-
         viewModel.error.observe(this) { error ->
             if (error.isNotEmpty()) {
                 Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
@@ -92,7 +83,6 @@ class PostActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         adapter = PostAdapter { postId, position ->
             //use for api call
-            viewModel.toggleLike(position)
         }
 
         binding.recyclerView.apply {

@@ -77,7 +77,7 @@ class PostAdapter(private val onLikeClick: (String, Int) -> Unit) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is PostViewHolder) {
             val post = postList[position].post
-            post?.let { holder.bind(it, onLikeClick, position) }
+            post?.let { holder.bind(it, onLikeClick, position , postList) }
         }
     }
 
@@ -94,7 +94,12 @@ class PostAdapter(private val onLikeClick: (String, Int) -> Unit) :
         }
 
         @SuppressLint("ClickableViewAccessibility")
-        fun bind(post: Post, onLikeClick: (String, Int) -> Unit, position: Int) {
+        fun bind(
+            post: Post,
+            onLikeClick: (String, Int) -> Unit,
+            position: Int,
+            postList: MutableList<PostListData>
+        ) {
 
             binding.caption.visibility = View.VISIBLE
             binding.txtCount.visibility = View.GONE
@@ -135,7 +140,14 @@ class PostAdapter(private val onLikeClick: (String, Int) -> Unit) :
             mediaAdapter.submitList(mediaList)
 
             binding.btnLike.setOnClickListener {
-                onLikeClick(post._id, position)
+
+                postList[position].post?.let {
+                    it.selfLike = !it.selfLike
+                    it.TotalLike = if (it.selfLike) it.TotalLike + 1 else it.TotalLike - 1
+                }
+                binding.btnLike.setImageResource(if (post.selfLike) R.drawable.ic_like else R.drawable.ic_unlike)
+                binding.txtLike.text = post.TotalLike.toString()
+                //onLikeClick(post._id, position)  // use for api call
                 binding.btnLike.animate()
                     .scaleX(1.2f)
                     .scaleY(1.2f)
